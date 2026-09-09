@@ -68,11 +68,35 @@ export function parseCSVRecords(raw: string): StreamRecord[] {
     )
   }
 
+  // Simple splitter that respects quoted commas — good enough for exports like this.
+  const splitLine = (line: string): string[] => {
+    const out: string[] = []
+    let cur = ''
+    let inQuotes = false
+
+    for (const char of line) {
+      if (char === '"') {
+        inQuotes = !inQuotes
+        continue
+      }
+
+      if (char === ',' && !inQuotes) {
+        out.push(cur)
+        cur = ''
+        continue
+      }
+
+      cur += char
+    }
+
+    out.push(cur)
+    return out
+  }
+
   const records: StreamRecord[] = []
 
   for (let i = 1; i < lines.length; i++) {
-    // TODO: this breaks on values that contain commas inside quotes
-    const cols = lines[i].split(',')
+    const cols = splitLine(lines[i])
 
     const artist = artistIdx !== -1 ? cols[artistIdx]?.trim() : 'Unknown Artist'
     const track = trackIdx !== -1 ? cols[trackIdx]?.trim() : 'Unknown Track'
