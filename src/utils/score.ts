@@ -86,7 +86,7 @@ export function computeArtistScore(a: ArtistDetail, lib: Library): ArtistScore {
 
   const tiers: [number, string, string][] = [
     [81, 'Superfan', 'This artist dominates your listening — heavy rotation, deep replays, and a consistent habit over time.'],
-    [71, 'True Fan', 'A clear favorite. You come back to this artist often and know the tracks well.'],
+    [61, 'True Fan', 'A clear favorite. You come back to this artist often and know the tracks well.'],
     [41, 'Regular Listener', 'You listen to this artist fairly often, but they share space with a lot of other music.'],
     [0, 'Casual Listener', 'Light or occasional listening — a track here and there rather than deep rotation.'],
   ]
