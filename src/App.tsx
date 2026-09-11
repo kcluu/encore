@@ -52,7 +52,7 @@ const App = () => {
   }
 
   function handleConnect() {
-    setStatus({ type: 'loading', message: 'Real Spotify sign-in needs a backend — showing demo data insted.' })
+    setStatus({ type: 'loading', message: 'Real Spotify sign-in needs a backend — showing demo data instead.' })
 
     setTimeout(() => loadRecords(generateDemoRecords()), 700)
   }
