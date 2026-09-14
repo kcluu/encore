@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react'
+
 import type { ArtistDetail, ArtistScore } from '../utils/types'
 import { colorFor, initialOf } from '../utils/score'
 
@@ -23,7 +25,7 @@ const ScorePanel = ({ result, totalArtists }: ScorePanelProps) => {
 
       {/* The ring is a conic-gradient sized by the --pct custom property —
           no SVG or animation library needed. */}
-      <div className="gauge" style={{ '--pct': score }}>
+      <div className="gauge" style={{ '--pct': score } as CSSProperties}>
         <div className="gauge-inner">
           <span className="gauge-num">{score}</span>
           <span className="gauge-den">/ 100</span>
