@@ -4,6 +4,7 @@ import Hero from './components/Hero'
 import EntryActions from './components/EntryActions'
 import ScorePanel from './components/ScorePanel'
 import StatsGrid from './components/StatsGrid'
+import TrackList from './components/TrackList'
 import { parseCSVRecords, parseJSONRecords, readFileAsText } from './utils/parse'
 import { buildLibrary, computeArtistScore, generateDemoRecords } from './utils/score'
 import type { Library, StatusMessage, StreamRecord } from './utils/types'
@@ -95,6 +96,11 @@ const App = () => {
           <section className="block">
             <h2 className="block-title">Stats for {scoreResult.artist.artist}</h2>
             <StatsGrid result={scoreResult} />
+          </section>
+
+          <section className="block">
+            <h2 className="block-title">Top tracks by {scoreResult.artist.artist}</h2>
+            <TrackList artist={scoreResult.artist} />
           </section>
         </main>
       )}
