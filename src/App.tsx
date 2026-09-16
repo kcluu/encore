@@ -2,29 +2,37 @@ import { useMemo, useState } from 'react'
 
 import Hero from './components/Hero'
 import EntryActions from './components/EntryActions'
+import ArtistSearch from './components/ArtistSearch'
+import ArtistChips from './components/ArtistChips'
 import ScorePanel from './components/ScorePanel'
 import StatsGrid from './components/StatsGrid'
 import TrackList from './components/TrackList'
 import { parseCSVRecords, parseJSONRecords, readFileAsText } from './utils/parse'
-import { buildLibrary, computeArtistScore, generateDemoRecords } from './utils/score'
+import { buildLibrary, computeArtistScore, generateDemoRecords, initialOf } from './utils/score'
 import type { Library, StatusMessage, StreamRecord } from './utils/types'
 
 const App = () => {
   const [records, setRecords] = useState<StreamRecord[] | null>(null)
+  const [profileLabel, setProfileLabel] = useState('Your Listening Profile')
+  const [selectedArtist, setSelectedArtist] = useState<string | null>(null)
   const [status, setStatus] = useState<StatusMessage | null>(null)
 
+  // Recomputed only when the raw records change, not on every render.
   const library = useMemo<Library | null>(() => (records ? buildLibrary(records) : null), [records])
 
-  const topArtist = library?.artists[0] ?? null
-
   const scoreResult = useMemo(() => {
-    if (!library || !topArtist) return null
+    if (!library || !selectedArtist) return null
 
-    return { artist: topArtist, ...computeArtistScore(topArtist, library) }
-  }, [library, topArtist])
+    const a = library.artistDetails.get(selectedArtist)
+    return a ? { artist: a, ...computeArtistScore(a, library) } : null
+  }, [library, selectedArtist])
 
-  function loadRecords(recs: StreamRecord[]) {
+  function loadRecords(recs: StreamRecord[], label: string) {
+    const lib = buildLibrary(recs)
+
     setRecords(recs)
+    setProfileLabel(label)
+    setSelectedArtist(lib.artists[0]?.artist ?? null)
     setStatus(null)
   }
 
@@ -54,56 +62,101 @@ const App = () => {
 
       if (!all.length) throw new Error('No streaming records were found in that file.')
 
-      loadRecords(all)
+      loadRecords(all, 'Your Streaming History')
     } catch (err) {
       setStatus({ type: 'error', message: (err as Error).message })
     }
   }
 
   function handleDemo() {
-    loadRecords(generateDemoRecords())
+    loadRecords(generateDemoRecords(), 'Demo Listener')
   }
 
   function handleConnect() {
-    setStatus({ type: 'loading', message: 'Real Spotify sign-in needs a backend — showing demo data instead.' })
+    setStatus({
+      type: 'loading',
+      message: 'Real Spotify sign-in needs a backend to securely handle OAuth — showing a demo preview instead.',
+    })
 
-    setTimeout(() => loadRecords(generateDemoRecords()), 700)
+    setTimeout(() => loadRecords(generateDemoRecords(), 'Demo Listener'), 700)
+  }
+
+  function handleReset() {
+    setRecords(null)
+    setSelectedArtist(null)
+    setStatus(null)
+    setProfileLabel('Your Listening Profile')
+  }
+
+  function selectArtistByName(name: string) {
+    if (library?.artistDetails.has(name)) {
+      setSelectedArtist(name)
+      setStatus(null)
+    } else {
+      setStatus({ type: 'error', message: `No plays found for "${name}" in your listening history.` })
+    }
   }
 
   return (
     <div className="page">
       <Hero
-        name="Your Listening Profile"
+        name={library ? profileLabel : 'Your Listening Profile'}
         subtitle={
           library
-            ? `${library.artists.length} artists · ${library.totalStreams} streams found`
+            ? `${library.artists.length} artists · ${library.totalStreams.toLocaleString()} streams analyzed`
             : 'Connect your account or upload your streaming history to begin'
         }
-        initial="?"
+        initial={library ? initialOf(profileLabel) : '?'}
       />
 
       {!library && (
         <EntryActions onFiles={handleFiles} onDemo={handleDemo} onConnect={handleConnect} status={status} />
       )}
 
-      {library && scoreResult && (
+      {library && (
         <main className="main">
           <section className="block">
-            <h2 className="block-title">Fan Score — {scoreResult.artist.artist}</h2>
-            <ScorePanel result={scoreResult} totalArtists={library.artists.length} />
+            <h2 className="block-title">Search an artist</h2>
+            <p className="block-sub">Look up any artist from your history to see their fan score</p>
+
+            <ArtistSearch artists={library.artists} onSelect={selectArtistByName} />
+
+            {status && <div className={`status status-${status.type}`}>{status.message}</div>}
           </section>
 
           <section className="block">
-            <h2 className="block-title">Stats for {scoreResult.artist.artist}</h2>
-            <StatsGrid result={scoreResult} />
+            <h2 className="block-title">Your top artists</h2>
+            <ArtistChips artists={library.artists.slice(0, 12)} active={selectedArtist} onSelect={selectArtistByName} />
           </section>
 
-          <section className="block">
-            <h2 className="block-title">Top tracks by {scoreResult.artist.artist}</h2>
-            <TrackList artist={scoreResult.artist} />
-          </section>
+          {scoreResult && (
+            <>
+              <section className="block">
+                <h2 className="block-title">Fan Score — {scoreResult.artist.artist}</h2>
+                <ScorePanel result={scoreResult} totalArtists={library.artists.length} />
+              </section>
+
+              <section className="block">
+                <h2 className="block-title">Stats for {scoreResult.artist.artist}</h2>
+                <StatsGrid result={scoreResult} />
+              </section>
+
+              <section className="block">
+                <h2 className="block-title">Top tracks by {scoreResult.artist.artist}</h2>
+                <TrackList artist={scoreResult.artist} />
+              </section>
+            </>
+          )}
+
+          <div className="reset-row">
+            <button className="btn btn-outline" onClick={handleReset}>
+              Analyze a different file
+            </button>
+          </div>
         </main>
       )}
+
+      <footer>Fan Score is an independent project and isn't affiliated with or endorsed by Spotify.</footer>
     </div>
   )
 }
