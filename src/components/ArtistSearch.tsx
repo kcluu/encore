@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import type { ArtistDetail } from '../utils/types'
 
@@ -10,13 +10,25 @@ interface ArtistSearchProps {
 const ArtistSearch = ({ artists, onSelect }: ArtistSearchProps) => {
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
+  const boxRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (boxRef.current && !boxRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [])
 
   const matches = query.trim()
     ? artists.filter((a) => a.artist.toLowerCase().includes(query.trim().toLowerCase())).slice(0, 8)
     : []
 
   return (
-    <div className="search">
+    <div className="search" ref={boxRef}>
       <input
         className="search-input"
         placeholder="Search an artist, e.g. Gracie Abrams"
