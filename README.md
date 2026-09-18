@@ -8,7 +8,7 @@ data.
 
 ```bash
 npm install
-npm start
+npm run dev
 ```
 
 Then open the local URL Vite prints (usually `http://localhost:5173`).
