@@ -1,3 +1,5 @@
+import './ScorePanel.css'
+
 import type { CSSProperties } from 'react'
 
 import type { ArtistDetail, ArtistScore } from '../utils/types'
