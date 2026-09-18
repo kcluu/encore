@@ -16,7 +16,7 @@ const Hero = ({ name, subtitle, initial }: HeroProps) => {
         <div className="avatar">{initial}</div>
 
         <div>
-          <p className="eyebrow">✨ your profile</p>
+          <p className="eyebrow">🎧 Your Encore profile</p>
           <h1 className="name">{name}</h1>
           <p className="subtitle">{subtitle}</p>
         </div>

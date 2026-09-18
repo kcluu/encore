@@ -39,29 +39,55 @@ body {
 /* Buttons and status messages are reused by more than one component, so
    they stay here rather than being duplicated in every stylesheet. */
 .btn {
+  position: relative;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 14px;
   padding: 12px 22px;
   border-radius: 999px;
-  border: 2.5px solid var(--text);
+  border: 1.5px solid var(--text);
   cursor: pointer;
-  box-shadow: 4px 4px 0 var(--pink);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition: transform 0.12s ease;
 }
 
-.btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 var(--pink);
+.btn::before,
+.chip::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  padding: 2px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 20% 30%, #ff3cac 0%, transparent 35%),
+    radial-gradient(circle at 80% 70%, #ff8acb 0%, transparent 35%),
+    radial-gradient(circle at 60% 20%, #b76cff 0%, transparent 40%);
+  background-size: 180% 180%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 5px rgba(255, 80, 170, 0.35));
+  animation: button-lava 6s ease-in-out infinite paused;
 }
 
-.btn:active {
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0 var(--pink);
+.btn:hover::before,
+.btn:focus-visible::before,
+.chip:hover::before,
+.chip:focus-visible::before {
+  opacity: 1;
+  animation-play-state: running;
 }
 
 .btn:focus-visible {
-  outline: 2px solid var(--yellow);
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--blue);
   outline-offset: 2px;
 }
 
@@ -78,7 +104,6 @@ body {
 .btn-ghost {
   background: transparent;
   border-color: transparent;
-  box-shadow: none;
   color: var(--text-dim);
   font-family: var(--font-body);
   font-weight: 600;
@@ -86,8 +111,18 @@ body {
 
 .btn-ghost:hover {
   transform: none;
-  box-shadow: none;
   color: var(--text);
+}
+
+@keyframes button-lava {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
 }
 
 .status {
