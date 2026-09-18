@@ -1,3 +1,5 @@
+import './TrackList.css'
+
 import type { ArtistDetail } from '../utils/types'
 
 interface TrackListProps {

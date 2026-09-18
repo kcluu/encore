@@ -1,3 +1,5 @@
+import './StatsGrid.css'
+
 import type { ArtistDetail, ArtistScore } from '../utils/types'
 
 interface StatsGridProps {

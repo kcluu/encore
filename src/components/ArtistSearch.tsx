@@ -1,3 +1,5 @@
+import './ArtistSearch.css'
+
 import { useEffect, useRef, useState } from 'react'
 
 import type { ArtistDetail } from '../utils/types'

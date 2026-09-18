@@ -1,0 +1,58 @@
+.track-list {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.track-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.track-row:last-child {
+  border-bottom: none;
+}
+
+.track-rank {
+  width: 18px;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 700;
+  text-align: right;
+}
+
+.track-name {
+  flex: 1;
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-bar {
+  width: 110px;
+  height: 5px;
+  background: #262626;
+  border-radius: 99px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.track-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 99px;
+}
+
+.track-count {
+  width: 60px;
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}

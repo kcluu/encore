@@ -1,3 +1,5 @@
+import './Hero.css'
+
 interface HeroProps {
   name: string
   subtitle: string

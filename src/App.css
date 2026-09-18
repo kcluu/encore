@@ -1,0 +1,35 @@
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 32px 60px;
+  width: 100%;
+}
+
+.block {
+  margin-top: 32px;
+}
+
+.block-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.block-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 0 0 12px;
+}
+
+.reset-row {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 720px) {
+  .main {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}

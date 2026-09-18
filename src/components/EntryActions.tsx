@@ -1,3 +1,5 @@
+import './EntryActions.css'
+
 import { useRef, useState } from 'react'
 
 import type { StatusMessage } from '../utils/types'

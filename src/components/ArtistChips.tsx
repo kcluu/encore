@@ -1,3 +1,5 @@
+import './ArtistChips.css'
+
 import type { ArtistDetail } from '../utils/types'
 import { colorFor, initialOf } from '../utils/score'
 

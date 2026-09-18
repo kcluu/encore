@@ -1,3 +1,5 @@
+import './App.css'
+
 import { useMemo, useState } from 'react'
 
 import Hero from './components/Hero'
