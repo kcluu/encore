@@ -26,6 +26,7 @@ const App = () => {
     if (!library || !selectedArtist) return null
 
     const a = library.artistDetails.get(selectedArtist)
+
     return a ? { artist: a, ...computeArtistScore(a, library) } : null
   }, [library, selectedArtist])
 
@@ -40,6 +41,7 @@ const App = () => {
 
   async function handleFiles(fileList: FileList) {
     const files = Array.from(fileList)
+
     if (!files.length) return
 
     setStatus({ type: 'loading', message: `Reading ${files.length} file${files.length > 1 ? 's' : ''}…` })
@@ -94,9 +96,11 @@ const App = () => {
     if (library?.artistDetails.has(name)) {
       setSelectedArtist(name)
       setStatus(null)
-    } else {
-      setStatus({ type: 'error', message: `No plays found for "${name}" in your listening history.` })
+
+      return
     }
+
+    setStatus({ type: 'error', message: `No plays found for "${name}" in your listening history.` })
   }
 
   return (
@@ -128,6 +132,7 @@ const App = () => {
 
           <section className="block">
             <h2 className="block-title">Your top artists</h2>
+
             <ArtistChips artists={library.artists.slice(0, 12)} active={selectedArtist} onSelect={selectArtistByName} />
           </section>
 
