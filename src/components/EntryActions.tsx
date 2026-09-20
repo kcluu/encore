@@ -11,7 +11,7 @@ interface EntryActionsProps {
   status: StatusMessage | null
 }
 
-const EntryActions = ({ onFiles, onDemo, onConnect, status }: EntryActionsProps) => {
+export const EntryActions = ({ onFiles, onDemo, onConnect, status }: EntryActionsProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [dragging, setDragging] = useState(false)
 
@@ -65,13 +65,11 @@ const EntryActions = ({ onFiles, onDemo, onConnect, status }: EntryActionsProps)
       {status && <div className={`status status-${status.type}`}>{status.message}</div>}
 
       <p className="note">
-        <strong>About "Connect Spotify":</strong> real sign-in needs a backend to hold your
-        app's client secret and exchange the OAuth code for a token — that can't happen safely
-        in the browser alone, so this button just previews demo data. The upload path is fully
-        real and never leaves your browser.
+        <strong>About "Connect Spotify":</strong> signs you in with Spotify's Authorization Code
+        + PKCE flow (no client secret needed) and pulls your last 50 played tracks. Requires a
+        Spotify app client ID — see <code>.env.example</code>. The upload path is fully real too,
+        and never leaves your browser.
       </p>
     </div>
   )
 }
-
-export default EntryActions

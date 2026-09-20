@@ -6,7 +6,7 @@ interface HeroProps {
   initial: string
 }
 
-const Hero = ({ name, subtitle, initial }: HeroProps) => {
+export const Hero = ({ name, subtitle, initial }: HeroProps) => {
   return (
     <div className="hero">
       <div className="hero-blob hero-blob-a" />
@@ -24,5 +24,3 @@ const Hero = ({ name, subtitle, initial }: HeroProps) => {
     </div>
   )
 }
-
-export default Hero

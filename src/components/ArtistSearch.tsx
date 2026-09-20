@@ -9,13 +9,13 @@ interface ArtistSearchProps {
   onSelect: (name: string) => void
 }
 
-const ArtistSearch = ({ artists, onSelect }: ArtistSearchProps) => {
+export const ArtistSearch = ({ artists, onSelect }: ArtistSearchProps) => {
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    const handleClickOutside = (e: MouseEvent) => {
       if (boxRef.current && !boxRef.current.contains(e.target as Node)) {
         setOpen(false)
       }
@@ -69,5 +69,3 @@ const ArtistSearch = ({ artists, onSelect }: ArtistSearchProps) => {
     </div>
   )
 }
-
-export default ArtistSearch

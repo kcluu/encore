@@ -40,28 +40,35 @@ messages, the responsive breakpoints — are genuinely shared across
 components, so those stay in `index.css` rather than being duplicated
 everywhere.
 
-Components are written as typed arrow functions
-(`const Hero = (props: HeroProps) => {...}`), and state is plain
-`useState` / `useMemo` — no Redux, no CSS-in-JS.
-
 ## Getting real Spotify data in
 
 - **Upload path (works today):** go to `spotify.com/account/privacy` →
   "Download your data" → request **Extended streaming history**. It arrives
   by email as a zip of `StreamingHistory_music_*.json` files — drop those
   straight into the app.
-- **"Connect Spotify" button:** currently just previews demo data. Real OAuth
-  can actually be done from the browser alone via Spotify's Authorization
-  Code + PKCE flow (no client secret needed) — see "Adding real OAuth" below.
+- **"Connect Spotify" button:** signs in via Spotify's Authorization Code +
+  PKCE flow (no client secret needed — it runs entirely in the browser) and
+  pulls your last 50 played tracks from `/me/player/recently-played`. To use
+  it:
+  1. Create an app at [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard).
+  2. In the app's settings, add a Redirect URI — e.g. `http://127.0.0.1:5173/`
+     for local dev.
+  3. Copy `.env.example` to `.env` and fill in `VITE_SPOTIFY_CLIENT_ID` (and
+     `VITE_SPOTIFY_REDIRECT_URI` if it differs from the default).
+  4. Restart `npm run dev`.
+
+  The relevant code: `src/utils/spotifyAuth.ts` (the PKCE dance) and
+  `src/utils/spotifyApi.ts` (fetching + mapping recently played tracks),
+  wired up in `App.tsx`.
 
 ## Things to extend next
 
-1. **Real OAuth via PKCE.** Spotify's PKCE flow is designed for frontend-only
-   apps. You'd still likely want a small backend, though — not for the OAuth
-   exchange itself, but because Spotify's live API only returns your last 50
-   plays (`/me/player/recently-played`). A backend with a scheduled job that
-   polls periodically and appends new plays to a database is what actually
-   builds up "lifetime" history over time for connected accounts.
+1. **Persist history beyond the last 50 plays.** Spotify's live API only
+   returns your last 50 plays — good for a real preview, not a full history.
+   A small backend with a scheduled job that polls periodically (using the
+   refresh token `completeSpotifyAuthorize` already returns) and appends new
+   plays to a database is what actually builds up "lifetime" history over
+   time for connected accounts.
 2. **Genre data.** The export has no genre field. You'd fetch each artist's
    genres from Spotify's `/artists` endpoint and layer a genre breakdown
    into `StatsGrid` or a new component.

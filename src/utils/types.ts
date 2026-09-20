@@ -1,4 +1,4 @@
-// A single play event, however it came in (CSV row, JSON entry, whatever).
+// A single play event, however it came in (CSV row, JSON entry, etc)
 export interface StreamRecord {
   artist: string
   track: string
@@ -6,7 +6,7 @@ export interface StreamRecord {
   ts: string | null
 }
 
-// Everything we've accumulated about one artist across the user's history.
+// Everything we've accumulated about one artist across the user's history
 export interface ArtistDetail {
   artist: string
   count: number

@@ -6,7 +6,7 @@ interface TrackListProps {
   artist: ArtistDetail
 }
 
-const TrackList = ({ artist }: TrackListProps) => {
+export const TrackList = ({ artist }: TrackListProps) => {
   const tracks = Array.from(artist.tracks.entries())
     .sort((a, b) => b[1] - a[1])
     .slice(0, 10)
@@ -30,5 +30,3 @@ const TrackList = ({ artist }: TrackListProps) => {
     </div>
   )
 }
-
-export default TrackList

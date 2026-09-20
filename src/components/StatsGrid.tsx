@@ -6,13 +6,13 @@ interface StatsGridProps {
   result: ArtistScore & { artist: ArtistDetail }
 }
 
-function formatDate(d: Date | null): string {
+const formatDate = (d: Date | null): string => {
   if (!d) return '—'
 
   return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
-const StatsGrid = ({ result }: StatsGridProps) => {
+export const StatsGrid = ({ result }: StatsGridProps) => {
   const { artist, hours, share, uniqueTracks, activeDays, avgReplays } = result
 
   const stats: [string, string][] = [
@@ -37,5 +37,3 @@ const StatsGrid = ({ result }: StatsGridProps) => {
     </div>
   )
 }
-
-export default StatsGrid

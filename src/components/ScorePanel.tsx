@@ -10,7 +10,7 @@ interface ScorePanelProps {
   totalArtists: number
 }
 
-const ScorePanel = ({ result, totalArtists }: ScorePanelProps) => {
+export const ScorePanel = ({ result, totalArtists }: ScorePanelProps) => {
   const { artist, score, tier, tierDesc, breakdown } = result
 
   return (
@@ -58,5 +58,3 @@ const ScorePanel = ({ result, totalArtists }: ScorePanelProps) => {
     </div>
   )
 }
-
-export default ScorePanel

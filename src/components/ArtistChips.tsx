@@ -9,7 +9,7 @@ interface ArtistChipsProps {
   onSelect: (name: string) => void
 }
 
-const ArtistChips = ({ artists, active, onSelect }: ArtistChipsProps) => {
+export const ArtistChips = ({ artists, active, onSelect }: ArtistChipsProps) => {
   return (
     <div className="chip-row">
       {artists.map((a) => (
@@ -28,5 +28,3 @@ const ArtistChips = ({ artists, active, onSelect }: ArtistChipsProps) => {
     </div>
   )
 }
-
-export default ArtistChips

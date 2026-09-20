@@ -9,28 +9,30 @@ import ArtistChips from './components/ArtistChips'
 import ScorePanel from './components/ScorePanel'
 import StatsGrid from './components/StatsGrid'
 import TrackList from './components/TrackList'
+import { useSpotifyCallback } from './hooks/useSpotifyCallback'
 import { parseCSVRecords, parseJSONRecords, readFileAsText } from './utils/parse'
 import { buildLibrary, computeArtistScore, generateDemoRecords, initialOf } from './utils/score'
+import { redirectToSpotifyAuthorize } from './utils/spotifyAuth'
 import type { Library, StatusMessage, StreamRecord } from './utils/types'
 
-const App = () => {
+export const App = () => {
   const [records, setRecords] = useState<StreamRecord[] | null>(null)
   const [profileLabel, setProfileLabel] = useState('Your Listening Profile')
   const [selectedArtist, setSelectedArtist] = useState<string | null>(null)
   const [status, setStatus] = useState<StatusMessage | null>(null)
 
-  // Recomputed only when the raw records change, not on every render.
+  // Recomputed only when the raw records change, not on every render
   const library = useMemo<Library | null>(() => (records ? buildLibrary(records) : null), [records])
 
   const scoreResult = useMemo(() => {
     if (!library || !selectedArtist) return null
 
-    const a = library.artistDetails.get(selectedArtist)
+    const selectedArtistDetail = library.artistDetails.get(selectedArtist)
 
-    return a ? { artist: a, ...computeArtistScore(a, library) } : null
+    return selectedArtistDetail ? { artist: selectedArtistDetail, ...computeArtistScore(selectedArtistDetail, library) } : null
   }, [library, selectedArtist])
 
-  function loadRecords(recs: StreamRecord[], label: string) {
+  const loadRecords = (recs: StreamRecord[], label: string) => {
     const lib = buildLibrary(recs)
 
     setRecords(recs)
@@ -39,7 +41,7 @@ const App = () => {
     setStatus(null)
   }
 
-  async function handleFiles(fileList: FileList) {
+  const handleFiles = async (fileList: FileList) => {
     const files = Array.from(fileList)
 
     if (!files.length) return
@@ -72,27 +74,29 @@ const App = () => {
     }
   }
 
-  function handleDemo() {
+  const handleDemo = () => {
     loadRecords(generateDemoRecords(), 'Demo Listener')
   }
 
-  function handleConnect() {
-    setStatus({
-      type: 'loading',
-      message: 'Real Spotify sign-in needs a backend to securely handle OAuth — showing a demo preview instead.',
-    })
+  useSpotifyCallback(loadRecords, setStatus)
 
-    setTimeout(() => loadRecords(generateDemoRecords(), 'Demo Listener'), 700)
+   const handleConnect = async () => {
+    try {
+      setStatus({ type: 'loading', message: 'Redirecting to Spotify…' })
+      await redirectToSpotifyAuthorize()
+    } catch (err) {
+      setStatus({ type: 'error', message: (err as Error).message })
+    }
   }
 
-  function handleReset() {
+  const handleReset = () => {
     setRecords(null)
     setSelectedArtist(null)
     setStatus(null)
     setProfileLabel('Your Listening Profile')
   }
 
-  function selectArtistByName(name: string) {
+  const selectArtistByName = (name: string) => {
     if (library?.artistDetails.has(name)) {
       setSelectedArtist(name)
       setStatus(null)
@@ -168,4 +172,3 @@ const App = () => {
   )
 }
 
-export default App

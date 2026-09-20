@@ -1,8 +1,8 @@
 import type { StreamRecord } from './types'
 
 // Turns a raw Spotify Extended Streaming History JSON export into a flat
-// array of stream records.
-export function parseJSONRecords(raw: string): StreamRecord[] {
+// array of stream records
+export const parseJSONRecords = (raw: string): StreamRecord[] => {
   let data: unknown
 
   try {
@@ -38,8 +38,8 @@ export function parseJSONRecords(raw: string): StreamRecord[] {
   return records
 }
 
-// Turns a CSV (with flexible header names) into the same record shape.
-export function parseCSVRecords(raw: string): StreamRecord[] {
+// Turns a CSV (with flexible header names) into the same record shape
+export const parseCSVRecords = (raw: string): StreamRecord[] => {
   const lines = raw.split(/\r?\n/).filter((l) => l.trim().length)
 
   if (lines.length < 2) {
@@ -68,7 +68,7 @@ export function parseCSVRecords(raw: string): StreamRecord[] {
     )
   }
 
-  // Simple splitter that respects quoted commas — good enough for exports like this.
+  // Simple splitter that respects quoted commas
   const splitLine = (line: string): string[] => {
     const out: string[] = []
     let cur = ''
@@ -116,7 +116,7 @@ export function parseCSVRecords(raw: string): StreamRecord[] {
   return records
 }
 
-export function readFileAsText(file: File): Promise<string> {
+export const readFileAsText = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
 

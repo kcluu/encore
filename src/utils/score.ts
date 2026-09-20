@@ -1,11 +1,11 @@
 import type { ArtistDetail, ArtistScore, Library, StreamRecord } from './types'
 
-// A play under 30s is treated as a skip, not a real listen.
+// A play under 30s is treated as a skip - not a real listen
 const MIN_MS = 30000
 
 // Groups flat play records by artist and computes the raw numbers each
-// artist's fan score is built from.
-export function buildLibrary(records: StreamRecord[]): Library {
+// artist's fan score is built from
+export const buildLibrary = (records: StreamRecord[]): Library => {
   const played = records.filter((r) => r.ms >= MIN_MS)
   const usable = played.length ? played : records // fallback if ms data is missing entirely
 
@@ -59,12 +59,12 @@ export function buildLibrary(records: StreamRecord[]): Library {
   }
 }
 
-// The Fan Score itself: four components out of 25 each.
-//   Volume       — how many hours you've put into this artist
-//   Share        — how much of your total listening they take up
-//   Consistency  — active days vs. the span you've been listening to them
-//   Replay depth — how often you repeat the same tracks (a fan behavior)
-export function computeArtistScore(a: ArtistDetail, lib: Library): ArtistScore {
+// The Fan Score itself: four components out of 25 each
+//   Volume: how many hours you've put into this artist
+//   Share: how much of your total listening they take up
+//   Consistency: active days vs. the span you've been listening to them
+//   Replay depth: how often you repeat the same tracks (a fan behavior)
+export const computeArtistScore = (a: ArtistDetail, lib: Library): ArtistScore => {
   const hours = a.ms / 3600000
   const uniqueTracks = a.tracks.size
   const share = lib.totalStreams ? a.count / lib.totalStreams : 0
@@ -113,7 +113,7 @@ export function computeArtistScore(a: ArtistDetail, lib: Library): ArtistScore {
 
 // Generates a plausible fake library so the UI can be explored without a
 // real export. Gracie Abrams is seeded near the top on purpose.
-export function generateDemoRecords(): StreamRecord[] {
+export const generateDemoRecords = (): StreamRecord[] => {
   const artists = [
     'Gracie Abrams', 'Frank Ocean', 'SZA', 'Tyler, The Creator', 'Mac Miller',
     'Beach House', 'Radiohead', 'Kendrick Lamar', 'Boards of Canada', 'Bon Iver',
@@ -159,7 +159,7 @@ export function generateDemoRecords(): StreamRecord[] {
 
 const CHIP_COLORS = ['#29e07a', '#ff5fa2', '#ffd23f', '#6fd6ff', '#b98cff']
 
-export function colorFor(str: string): string {
+export const colorFor = (str: string): string => {
   let h = 0
 
   for (let i = 0; i < str.length; i++) {
@@ -169,6 +169,4 @@ export function colorFor(str: string): string {
   return CHIP_COLORS[h % CHIP_COLORS.length]
 }
 
-export function initialOf(str: string): string {
-  return (str.trim()[0] || '\u266A').toUpperCase()
-}
+export const initialOf = (str: string): string => (str.trim()[0] || '\u266A').toUpperCase()
