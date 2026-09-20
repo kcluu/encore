@@ -21,7 +21,9 @@
   font-size: 13.5px;
   color: var(--text-dim);
   line-height: 1.6;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
 .dropzone-active {

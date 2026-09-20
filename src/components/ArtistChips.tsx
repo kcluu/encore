@@ -21,7 +21,6 @@ export const ArtistChips = ({ artists, active, onSelect }: ArtistChipsProps) => 
           <span className="chip-avatar" style={{ background: colorFor(a.artist) }}>
             {initialOf(a.artist)}
           </span>
-
           <span className="chip-rank">#{a.rank}</span> {a.artist}
         </button>
       ))}

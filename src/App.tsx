@@ -2,13 +2,13 @@ import './App.css'
 
 import { useMemo, useState } from 'react'
 
-import Hero from './components/Hero'
-import EntryActions from './components/EntryActions'
-import ArtistSearch from './components/ArtistSearch'
-import ArtistChips from './components/ArtistChips'
-import ScorePanel from './components/ScorePanel'
-import StatsGrid from './components/StatsGrid'
-import TrackList from './components/TrackList'
+import { Hero } from './components/Hero'
+import { EntryActions } from './components/EntryActions'
+import { ArtistSearch } from './components/ArtistSearch'
+import { ArtistChips } from './components/ArtistChips'
+import { ScorePanel } from './components/ScorePanel'
+import { StatsGrid } from './components/StatsGrid'
+import { TrackList } from './components/TrackList'
 import { useSpotifyCallback } from './hooks/useSpotifyCallback'
 import { parseCSVRecords, parseJSONRecords, readFileAsText } from './utils/parse'
 import { buildLibrary, computeArtistScore, generateDemoRecords, initialOf } from './utils/score'
@@ -29,7 +29,9 @@ export const App = () => {
 
     const selectedArtistDetail = library.artistDetails.get(selectedArtist)
 
-    return selectedArtistDetail ? { artist: selectedArtistDetail, ...computeArtistScore(selectedArtistDetail, library) } : null
+    return selectedArtistDetail
+      ? { artist: selectedArtistDetail, ...computeArtistScore(selectedArtistDetail, library) }
+      : null
   }, [library, selectedArtist])
 
   const loadRecords = (recs: StreamRecord[], label: string) => {
@@ -80,7 +82,7 @@ export const App = () => {
 
   useSpotifyCallback(loadRecords, setStatus)
 
-   const handleConnect = async () => {
+  const handleConnect = async () => {
     try {
       setStatus({ type: 'loading', message: 'Redirecting to Spotify…' })
       await redirectToSpotifyAuthorize()
@@ -137,7 +139,11 @@ export const App = () => {
           <section className="block">
             <h2 className="block-title">Your top artists</h2>
 
-            <ArtistChips artists={library.artists.slice(0, 12)} active={selectedArtist} onSelect={selectArtistByName} />
+            <ArtistChips
+              artists={library.artists.slice(0, 12)}
+              active={selectedArtist}
+              onSelect={selectArtistByName}
+            />
           </section>
 
           {scoreResult && (
@@ -171,4 +177,3 @@ export const App = () => {
     </div>
   )
 }
-

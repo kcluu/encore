@@ -19,7 +19,9 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
 }
@@ -65,9 +67,13 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 120ms ease;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
   mask-composite: exclude;
   filter: drop-shadow(0 0 5px rgba(255, 80, 170, 0.35));
   animation: button-lava 6s ease-in-out infinite paused;

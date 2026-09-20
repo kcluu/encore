@@ -58,7 +58,14 @@ export const parseCSVRecords = (raw: string): StreamRecord[] => {
   }
 
   const artistIdx = findCol(['artist', 'artistname', 'artist_name', 'master_metadata_album_artist_name'])
-  const trackIdx = findCol(['track', 'trackname', 'track_name', 'song', 'title', 'master_metadata_track_name'])
+  const trackIdx = findCol([
+    'track',
+    'trackname',
+    'track_name',
+    'song',
+    'title',
+    'master_metadata_track_name',
+  ])
   const msIdx = findCol(['msplayed', 'ms_played', 'duration_ms', 'ms'])
   const tsIdx = findCol(['endtime', 'played_at', 'ts', 'timestamp', 'date'])
 

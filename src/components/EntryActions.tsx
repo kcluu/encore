@@ -48,8 +48,8 @@ export const EntryActions = ({ onFiles, onDemo, onConnect, status }: EntryAction
         <p>
           <strong>Drop your file here</strong>, or click a button above.
           <br />
-          Accepts Spotify's Extended Streaming History <code>.json</code> files, or a{' '}
-          <code>.csv</code> with artist / track / played-at columns.
+          Accepts Spotify's Extended Streaming History <code>.json</code> files, or a <code>.csv</code> with
+          artist / track / played-at columns.
         </p>
 
         <input
@@ -65,10 +65,9 @@ export const EntryActions = ({ onFiles, onDemo, onConnect, status }: EntryAction
       {status && <div className={`status status-${status.type}`}>{status.message}</div>}
 
       <p className="note">
-        <strong>About "Connect Spotify":</strong> signs you in with Spotify's Authorization Code
-        + PKCE flow (no client secret needed) and pulls your last 50 played tracks. Requires a
-        Spotify app client ID — see <code>.env.example</code>. The upload path is fully real too,
-        and never leaves your browser.
+        <strong>About "Connect Spotify":</strong> signs you in with Spotify's Authorization Code + PKCE flow
+        (no client secret needed) and pulls your last 50 played tracks. Requires a Spotify app client ID — see{' '}
+        <code>.env.example</code>. The upload path is fully real too, and never leaves your browser.
       </p>
     </div>
   )

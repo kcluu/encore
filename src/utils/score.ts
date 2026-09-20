@@ -85,10 +85,22 @@ export const computeArtistScore = (a: ArtistDetail, lib: Library): ArtistScore =
   const score = Math.round(volumeScore + shareScore + consistencyScore + replayScore)
 
   const tiers: [number, string, string][] = [
-    [81, 'Superfan', 'This artist dominates your listening — heavy rotation, deep replays, and a consistent habit over time.'],
+    [
+      81,
+      'Superfan',
+      'This artist dominates your listening — heavy rotation, deep replays, and a consistent habit over time.',
+    ],
     [61, 'True Fan', 'A clear favorite. You come back to this artist often and know the tracks well.'],
-    [41, 'Regular Listener', 'You listen to this artist fairly often, but they share space with a lot of other music.'],
-    [0, 'Casual Listener', 'Light or occasional listening — a track here and there rather than deep rotation.'],
+    [
+      41,
+      'Regular Listener',
+      'You listen to this artist fairly often, but they share space with a lot of other music.',
+    ],
+    [
+      0,
+      'Casual Listener',
+      'Light or occasional listening — a track here and there rather than deep rotation.',
+    ],
   ]
 
   const [, tier, tierDesc] = tiers.find(([min]) => score >= min)!
@@ -115,9 +127,19 @@ export const computeArtistScore = (a: ArtistDetail, lib: Library): ArtistScore =
 // real export. Gracie Abrams is seeded near the top on purpose.
 export const generateDemoRecords = (): StreamRecord[] => {
   const artists = [
-    'Gracie Abrams', 'Frank Ocean', 'SZA', 'Tyler, The Creator', 'Mac Miller',
-    'Beach House', 'Radiohead', 'Kendrick Lamar', 'Boards of Canada', 'Bon Iver',
-    'Björk', 'Steve Lacy', 'Alvvays',
+    'Gracie Abrams',
+    'Frank Ocean',
+    'SZA',
+    'Tyler, The Creator',
+    'Mac Miller',
+    'Beach House',
+    'Radiohead',
+    'Kendrick Lamar',
+    'Boards of Canada',
+    'Bon Iver',
+    'Björk',
+    'Steve Lacy',
+    'Alvvays',
   ]
 
   const weight = [34, 26, 20, 17, 14, 10, 9, 8, 7, 6, 5, 4, 3]
