@@ -25,7 +25,14 @@ export const useSpotifyCallback = (
 
     completeSpotifyAuthorize(callback.code, callback.state)
       .then((tokens) => fetchRecentlyPlayed(tokens.accessToken))
-      .then((recs) => loadRecords(recs, 'Your Spotify Account'))
+      .then((recs) => {
+        loadRecords(recs, 'Your Spotify Account')
+        setStatus({
+          type: 'info',
+          message:
+            "Connected — but Spotify's API only exposes your last 50 played tracks, so this score is based on those, not your full history. For lifetime data, use the upload path instead.",
+        })
+      })
       .catch((err) => setStatus({ type: 'error', message: (err as Error).message }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

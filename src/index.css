@@ -150,6 +150,12 @@ body {
   border: 2px solid rgba(41, 224, 122, 0.25);
 }
 
+.status-info {
+  background: rgba(111, 214, 255, 0.1);
+  color: var(--blue);
+  border: 2px solid rgba(111, 214, 255, 0.25);
+}
+
 footer {
   text-align: center;
   padding: 26px 20px 44px;

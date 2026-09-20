@@ -44,6 +44,6 @@ export interface ArtistScore {
 }
 
 export interface StatusMessage {
-  type: 'error' | 'loading'
+  type: 'error' | 'loading' | 'info'
   message: string
 }

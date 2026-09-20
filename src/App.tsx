@@ -132,7 +132,6 @@ export const App = () => {
             <p className="block-sub">Look up any artist from your history to see their fan score</p>
 
             <ArtistSearch artists={library.artists} onSelect={selectArtistByName} />
-
             {status && <div className={`status status-${status.type}`}>{status.message}</div>}
           </section>
 
