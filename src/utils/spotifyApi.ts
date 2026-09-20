@@ -34,3 +34,48 @@ export const fetchRecentlyPlayed = async (accessToken: string): Promise<StreamRe
     ts: item.played_at,
   }))
 }
+
+export interface SpotifyProfile {
+  displayName: string | null
+  imageUrl: string | null
+}
+
+export const fetchSpotifyProfile = async (accessToken: string): Promise<SpotifyProfile> => {
+  const res = await fetch('https://api.spotify.com/v1/me', {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  })
+
+  if (!res.ok) return { displayName: null, imageUrl: null }
+
+  const json = await res.json()
+
+  return {
+    displayName: json.display_name ?? null,
+    imageUrl: json.images?.[0]?.url ?? null,
+  }
+}
+
+const normalize = (name: string): string => name.trim().toLowerCase()
+
+// Streaming history only has artist names, not Spotify IDs, so we look each
+// one up by name to grab a photo
+// Fall back is avatar initial
+export const searchArtistImage = async (accessToken: string, artistName: string): Promise<string | null> => {
+  const params = new URLSearchParams({ q: artistName, type: 'artist', limit: '1' })
+
+  const res = await fetch(`https://api.spotify.com/v1/search?${params.toString()}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  })
+
+  if (!res.ok) return null
+
+  const json = await res.json()
+  const top = json.artists?.items?.[0]
+
+  if (!top) return null
+
+  // Spotify's search is fuzzy, not exact
+  if (normalize(top.name) !== normalize(artistName)) return null
+
+  return top.images?.[0]?.url ?? null
+}

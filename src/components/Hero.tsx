@@ -4,16 +4,19 @@ interface HeroProps {
   name: string
   subtitle: string
   initial: string
+  photoUrl?: string | null
 }
 
-export const Hero = ({ name, subtitle, initial }: HeroProps) => {
+export const Hero = ({ name, subtitle, initial, photoUrl }: HeroProps) => {
   return (
     <div className="hero">
       <div className="hero-blob hero-blob-a" />
       <div className="hero-blob hero-blob-b" />
 
       <div className="hero-inner">
-        <div className="avatar">{initial}</div>
+        <div className="avatar">
+          {photoUrl ? <img className="avatar-photo" src={photoUrl} alt="" /> : initial}
+        </div>
 
         <div>
           <p className="eyebrow">🎧 Your Encore profile</p>

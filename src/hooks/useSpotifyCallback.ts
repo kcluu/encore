@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 
 import { clearCallbackParams, completeSpotifyAuthorize, readAuthorizeCallback } from '../utils/spotifyAuth'
-import { fetchRecentlyPlayed } from '../utils/spotifyApi'
+import { fetchRecentlyPlayed, fetchSpotifyProfile } from '../utils/spotifyApi'
 import type { StatusMessage, StreamRecord } from '../utils/types'
 
 export const useSpotifyCallback = (
-  loadRecords: (recs: StreamRecord[], label: string) => void,
-  setStatus: (status: StatusMessage | null) => void
+  loadRecords: (recs: StreamRecord[], label: string, photoUrl: string | null) => void,
+  setStatus: (status: StatusMessage | null) => void,
+  onToken: (accessToken: string) => void
 ) => {
   useEffect(() => {
     let callback: { code: string; state: string } | null
@@ -24,9 +25,18 @@ export const useSpotifyCallback = (
     setStatus({ type: 'loading', message: 'Finishing Spotify sign-in…' })
 
     completeSpotifyAuthorize(callback.code, callback.state)
-      .then((tokens) => fetchRecentlyPlayed(tokens.accessToken))
-      .then((recs) => {
-        loadRecords(recs, 'Your Spotify Account')
+      .then(async (tokens) => {
+        onToken(tokens.accessToken)
+
+        const [recs, profile] = await Promise.all([
+          fetchRecentlyPlayed(tokens.accessToken),
+          fetchSpotifyProfile(tokens.accessToken),
+        ])
+
+        return { recs, profile }
+      })
+      .then(({ recs, profile }) => {
+        loadRecords(recs, profile.displayName ?? 'Your Spotify Account', profile.imageUrl)
         setStatus({
           type: 'info',
           message:

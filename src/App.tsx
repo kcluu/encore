@@ -9,20 +9,32 @@ import { ArtistChips } from './components/ArtistChips'
 import { ScorePanel } from './components/ScorePanel'
 import { StatsGrid } from './components/StatsGrid'
 import { TrackList } from './components/TrackList'
+import { useArtistImages } from './hooks/useArtistImages'
 import { useSpotifyCallback } from './hooks/useSpotifyCallback'
 import { parseCSVRecords, parseJSONRecords, readFileAsText } from './utils/parse'
 import { buildLibrary, computeArtistScore, generateDemoRecords, initialOf } from './utils/score'
 import { redirectToSpotifyAuthorize } from './utils/spotifyAuth'
 import type { Library, StatusMessage, StreamRecord } from './utils/types'
 
+const VISIBLE_ARTIST_COUNT = 12
+
 export const App = () => {
   const [records, setRecords] = useState<StreamRecord[] | null>(null)
   const [profileLabel, setProfileLabel] = useState('Your Listening Profile')
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null)
   const [selectedArtist, setSelectedArtist] = useState<string | null>(null)
   const [status, setStatus] = useState<StatusMessage | null>(null)
+  const [accessToken, setAccessToken] = useState<string | null>(null)
 
   // Recomputed only when the raw records change, not on every render
   const library = useMemo<Library | null>(() => (records ? buildLibrary(records) : null), [records])
+
+  const { images: artistImages, reset: resetArtistImages } = useArtistImages(
+    library,
+    accessToken,
+    selectedArtist,
+    VISIBLE_ARTIST_COUNT
+  )
 
   const scoreResult = useMemo(() => {
     if (!library || !selectedArtist) return null
@@ -34,11 +46,12 @@ export const App = () => {
       : null
   }, [library, selectedArtist])
 
-  const loadRecords = (recs: StreamRecord[], label: string) => {
+  const loadRecords = (recs: StreamRecord[], label: string, photoUrl: string | null = null) => {
     const lib = buildLibrary(recs)
 
     setRecords(recs)
     setProfileLabel(label)
+    setProfilePhoto(photoUrl)
     setSelectedArtist(lib.artists[0]?.artist ?? null)
     setStatus(null)
   }
@@ -80,7 +93,7 @@ export const App = () => {
     loadRecords(generateDemoRecords(), 'Demo Listener')
   }
 
-  useSpotifyCallback(loadRecords, setStatus)
+  useSpotifyCallback(loadRecords, setStatus, setAccessToken)
 
   const handleConnect = async () => {
     try {
@@ -96,6 +109,9 @@ export const App = () => {
     setSelectedArtist(null)
     setStatus(null)
     setProfileLabel('Your Listening Profile')
+    setProfilePhoto(null)
+    setAccessToken(null)
+    resetArtistImages()
   }
 
   const selectArtistByName = (name: string) => {
@@ -111,6 +127,8 @@ export const App = () => {
 
   return (
     <div className="page">
+      {status && <div className={`status status-${status.type}`}>{status.message}</div>}
+
       <Hero
         name={library ? profileLabel : 'Your Listening Profile'}
         subtitle={
@@ -119,6 +137,7 @@ export const App = () => {
             : 'Connect your account or upload your streaming history to begin'
         }
         initial={library ? initialOf(profileLabel) : '?'}
+        photoUrl={library ? profilePhoto : null}
       />
 
       {!library && (
@@ -132,16 +151,16 @@ export const App = () => {
             <p className="block-sub">Look up any artist from your history to see their fan score</p>
 
             <ArtistSearch artists={library.artists} onSelect={selectArtistByName} />
-            {status && <div className={`status status-${status.type}`}>{status.message}</div>}
           </section>
 
           <section className="block">
             <h2 className="block-title">Your top artists</h2>
 
             <ArtistChips
-              artists={library.artists.slice(0, 12)}
+              artists={library.artists.slice(0, VISIBLE_ARTIST_COUNT)}
               active={selectedArtist}
               onSelect={selectArtistByName}
+              images={artistImages}
             />
           </section>
 
@@ -149,7 +168,11 @@ export const App = () => {
             <>
               <section className="block">
                 <h2 className="block-title">Fan Score — {scoreResult.artist.artist}</h2>
-                <ScorePanel result={scoreResult} totalArtists={library.artists.length} />
+                <ScorePanel
+                  result={scoreResult}
+                  totalArtists={library.artists.length}
+                  imageUrl={artistImages[scoreResult.artist.artist]}
+                />
               </section>
 
               <section className="block">
