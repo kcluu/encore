@@ -31,7 +31,11 @@ export const buildLibrary = (records: StreamRecord[]): Library => {
 
     a.count += 1
     a.ms += r.ms || 0
-    a.tracks.set(r.track, (a.tracks.get(r.track) || 0) + 1)
+
+    const t = a.tracks.get(r.track) ?? { count: 0, ms: 0 }
+    t.count += 1
+    t.ms += r.ms || 0
+    a.tracks.set(r.track, t)
 
     if (r.ts) {
       const d = new Date(r.ts)

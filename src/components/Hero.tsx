@@ -15,7 +15,11 @@ export const Hero = ({ name, subtitle, initial, photoUrl }: HeroProps) => {
 
       <div className="hero-inner">
         <div className="avatar">
-          {photoUrl ? <img className="avatar-photo" src={photoUrl} alt="" /> : initial}
+          {photoUrl ? (
+            <img className="avatar-photo" src={photoUrl} aria-label={`Avatar for ${name}`} />
+          ) : (
+            initial
+          )}
         </div>
 
         <div>

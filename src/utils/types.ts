@@ -11,7 +11,7 @@ export interface ArtistDetail {
   artist: string
   count: number
   ms: number
-  tracks: Map<string, number>
+  tracks: Map<string, { count: number; ms: number }>
   days: Set<string>
   minTs: Date | null
   maxTs: Date | null

@@ -23,7 +23,11 @@ export const ArtistChips = ({ artists, active, onSelect, images }: ArtistChipsPr
             onClick={() => onSelect(a.artist)}
           >
             <span className="chip-avatar" style={{ background: colorFor(a.artist) }}>
-              {imageUrl ? <img className="chip-avatar-photo" src={imageUrl} alt="" /> : initialOf(a.artist)}
+              {imageUrl ? (
+                <img className="chip-avatar-photo" src={imageUrl} aria-label={`Avatar for ${a.artist}`} />
+              ) : (
+                initialOf(a.artist)
+              )}
             </span>
             <span className="chip-rank">#{a.rank}</span> {a.artist}
           </button>

@@ -16,7 +16,7 @@ import { buildLibrary, computeArtistScore, generateDemoRecords, initialOf } from
 import { redirectToSpotifyAuthorize } from './utils/spotifyAuth'
 import type { Library, StatusMessage, StreamRecord } from './utils/types'
 
-const VISIBLE_ARTIST_COUNT = 12
+const VISIBLE_ARTIST_COUNT = 10
 
 export const App = () => {
   const [records, setRecords] = useState<StreamRecord[] | null>(null)
