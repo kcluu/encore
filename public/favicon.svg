@@ -1,0 +1,15 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#29e07a"/>
+      <stop offset="100%" stop-color="#6fd6ff"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="32" cy="32" r="30" fill="url(#bg)" stroke="#f6f3fb" stroke-width="3"/>
+
+  <!-- headphones -->
+  <path d="M18 33 v-3 a14 14 0 0 1 28 0 v3" fill="none" stroke="#100b1c" stroke-width="4.5" stroke-linecap="round"/>
+  <rect x="14" y="31" width="9" height="14" rx="4.5" fill="#100b1c"/>
+  <rect x="41" y="31" width="9" height="14" rx="4.5" fill="#100b1c"/>
+</svg>
