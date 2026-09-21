@@ -63,7 +63,7 @@ export const buildLibrary = (records: StreamRecord[]): Library => {
   }
 }
 
-// The Fan Score itself: four components out of 25 each
+// The Fan Score itself (four components out of 25 each)
 //   Volume: how many hours you've put into this artist
 //   Share: how much of your total listening they take up
 //   Consistency: active days vs. the span you've been listening to them

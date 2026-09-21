@@ -1,13 +1,14 @@
 import './Hero.css'
 
 interface HeroProps {
+  header: string
   name: string
   subtitle: string
   initial: string
   photoUrl?: string | null
 }
 
-export const Hero = ({ name, subtitle, initial, photoUrl }: HeroProps) => {
+export const Hero = ({ header = 'Your Encore profile', name, subtitle, initial, photoUrl }: HeroProps) => {
   return (
     <div className="hero">
       <div className="hero-blob hero-blob-a" />
@@ -23,7 +24,7 @@ export const Hero = ({ name, subtitle, initial, photoUrl }: HeroProps) => {
         </div>
 
         <div>
-          <p className="eyebrow">🎧 Your Encore profile</p>
+          <p className="eyebrow">🎧 {header}</p>
           <h1 className="name">{name}</h1>
           <p className="subtitle">{subtitle}</p>
         </div>

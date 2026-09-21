@@ -130,6 +130,7 @@ export const App = () => {
       {status && <div className={`status status-${status.type}`}>{status.message}</div>}
 
       <Hero
+        header={library ? 'Your Encore profile' : 'Encore: Giving fans more'}
         name={library ? profileLabel : 'Your Listening Profile'}
         subtitle={
           library
