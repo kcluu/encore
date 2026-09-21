@@ -12,7 +12,7 @@ import { TrackList } from './components/TrackList'
 import { useArtistImages } from './hooks/useArtistImages'
 import { useSpotifyCallback } from './hooks/useSpotifyCallback'
 import { parseCSVRecords, parseJSONRecords, readFileAsText } from './utils/parse'
-import { buildLibrary, computeArtistScore, generateDemoRecords, initialOf } from './utils/score'
+import { buildLibrary, computeArtistScore, initialOf } from './utils/score'
 import { redirectToSpotifyAuthorize } from './utils/spotifyAuth'
 import type { Library, StatusMessage, StreamRecord } from './utils/types'
 
@@ -89,10 +89,6 @@ export const App = () => {
     }
   }
 
-  const handleDemo = () => {
-    loadRecords(generateDemoRecords(), 'Demo Listener')
-  }
-
   useSpotifyCallback(loadRecords, setStatus, setAccessToken)
 
   const handleConnect = async () => {
@@ -142,7 +138,7 @@ export const App = () => {
       />
 
       {!library && (
-        <EntryActions onFiles={handleFiles} onDemo={handleDemo} onConnect={handleConnect} status={status} />
+        <EntryActions onFiles={handleFiles} onConnect={handleConnect} status={status} />
       )}
 
       {library && (
@@ -196,7 +192,7 @@ export const App = () => {
         </main>
       )}
 
-      <footer>Fan Score is an independent project and isn't affiliated with or endorsed by Spotify.</footer>
+      <footer>Encore is an independent project and isn't affiliated with or endorsed by Spotify.</footer>
     </div>
   )
 }

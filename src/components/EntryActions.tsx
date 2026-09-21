@@ -9,12 +9,11 @@ const IN_PROGRESS_MESSAGE = 'This feature is currently in progress'
 
 interface EntryActionsProps {
   onFiles: (files: FileList) => void
-  onDemo: () => void
   onConnect: () => void
   status: StatusMessage | null
 }
 
-export const EntryActions = ({ onFiles, onDemo, onConnect, status }: EntryActionsProps) => {
+export const EntryActions = ({ onFiles, onConnect, status }: EntryActionsProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
@@ -29,10 +28,6 @@ export const EntryActions = ({ onFiles, onDemo, onConnect, status }: EntryAction
             Upload history
           </button>
         </Tooltip>
-
-        <button className="btn btn-ghost" onClick={onDemo}>
-          Try demo data →
-        </button>
       </div>
 
       <Tooltip message={IN_PROGRESS_MESSAGE}>

@@ -1,8 +1,12 @@
-# Fan Score
+# Encore: Fan Score
 
 A small React + TypeScript app that computes a per-artist "fan score" from
-your Spotify listening history — upload the export, or click through demo
-data.
+your Spotify listening history — connect your account or upload the export (WIP).
+
+<p>
+  <img src="docs/screenshots/entry.png" alt="Connect or upload screen" width="49%" />
+  <img src="docs/screenshots/dashboard.png" alt="Fan score dashboard for a selected artist" width="49%" />
+</p>
 
 ## Run it
 
@@ -23,7 +27,7 @@ src/
     score.ts     — groups records by artist and computes the fan score
   components/
     Hero.tsx           + Hero.css           — profile header
-    EntryActions.tsx   + EntryActions.css   — connect / upload / demo buttons + dropzone
+    EntryActions.tsx   + EntryActions.css   — connect / upload buttons + dropzone
     ArtistSearch.tsx   + ArtistSearch.css   — search box for any artist in your history
     ArtistChips.tsx    + ArtistChips.css    — horizontal strip of top artists
     ScorePanel.tsx      + ScorePanel.css     — score gauge + tier + breakdown bars
@@ -33,16 +37,9 @@ src/
   index.css           — design tokens (:root) and anything shared across components
 ```
 
-Every component owns its own stylesheet and imports it directly
-(`import './Hero.css'`), so styling one piece of the UI never means
-scrolling through one giant CSS file. A few things — buttons, status
-messages, the responsive breakpoints — are genuinely shared across
-components, so those stay in `index.css` rather than being duplicated
-everywhere.
-
 ## Getting real Spotify data in
 
-- **Upload path (works today):** go to `spotify.com/account/privacy` →
+- **Upload path (WIP):** go to `spotify.com/account/privacy` →
   "Download your data" → request **Extended streaming history**. It arrives
   by email as a zip of `StreamingHistory_music_*.json` files — drop those
   straight into the app.
@@ -60,23 +57,3 @@ everywhere.
   The relevant code: `src/utils/spotifyAuth.ts` (the PKCE dance) and
   `src/utils/spotifyApi.ts` (fetching + mapping recently played tracks),
   wired up in `App.tsx`.
-
-## Things to extend next
-
-1. **Persist history beyond the last 50 plays.** Spotify's live API only
-   returns your last 50 plays — good for a real preview, not a full history.
-   A small backend with a scheduled job that polls periodically (using the
-   refresh token `completeSpotifyAuthorize` already returns) and appends new
-   plays to a database is what actually builds up "lifetime" history over
-   time for connected accounts.
-2. **Genre data.** The export has no genre field. You'd fetch each artist's
-   genres from Spotify's `/artists` endpoint and layer a genre breakdown
-   into `StatsGrid` or a new component.
-3. **Shareable score card.** Render `ScorePanel` to an image (e.g. with the
-   `html-to-image` package) so people can post their score, à la Wrapped.
-4. **Score history over time.** Persist past uploads so returning users can
-   see how a given artist's score has moved.
-5. **Tune the scoring weights.** All four components live in
-   `computeArtistScore` in `src/utils/score.ts` — the volume benchmark (150
-   hours), the share multiplier, and the replay cap (5×) are all just
-   constants you can adjust to taste.
