@@ -3,10 +3,7 @@
 A small React + TypeScript app that computes a per-artist "fan score" from
 your Spotify listening history — connect your account or upload the export (WIP).
 
-<p>
-  <img src="docs/screenshots/entry.png" alt="Connect or upload screen" width="49%" />
-  <img src="docs/screenshots/dashboard.png" alt="Fan score dashboard for a selected artist" width="49%" />
-</p>
+![Clicking Connect Spotify, then the resulting fan score dashboard](docs/screenshots/connect-flow.gif)
 
 ## Run it
 
@@ -33,22 +30,20 @@ src/
     ScorePanel.tsx      + ScorePanel.css     — score gauge + tier + breakdown bars
     StatsGrid.tsx       + StatsGrid.css      — stat cards for the selected artist
     TrackList.tsx       + TrackList.css      — that artist's top tracks
-  App.tsx + App.css   — holds all state, wires the pieces together
-  index.css           — design tokens (:root) and anything shared across components
 ```
 
 ## Getting real Spotify data in
 
 - **Upload path (WIP):** go to `spotify.com/account/privacy` →
   "Download your data" → request **Extended streaming history**. It arrives
-  by email as a zip of `StreamingHistory_music_*.json` files — drop those
+  by email as a zip of `StreamingHistory_music_*.json` files, drop those
   straight into the app.
 - **"Connect Spotify" button:** signs in via Spotify's Authorization Code +
-  PKCE flow (no client secret needed — it runs entirely in the browser) and
+  PKCE flow (no client secret needed, it runs entirely in the browser) and
   pulls your last 50 played tracks from `/me/player/recently-played`. To use
   it:
   1. Create an app at [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard).
-  2. In the app's settings, add a Redirect URI — e.g. `http://127.0.0.1:5173/`
+  2. In the app's settings, add a Redirect URI (e.g. `http://127.0.0.1:5173/`)
      for local dev.
   3. Copy `.env.example` to `.env` and fill in `VITE_SPOTIFY_CLIENT_ID` (and
      `VITE_SPOTIFY_REDIRECT_URI` if it differs from the default).
