@@ -1,0 +1,15 @@
+.cursor-tooltip {
+  position: fixed;
+  transform: translate(14px, 18px);
+  z-index: 200;
+  pointer-events: none;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}

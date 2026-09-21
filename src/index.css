@@ -52,6 +52,11 @@ body {
   transition: transform 0.12s ease;
 }
 
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .btn::before,
 .chip::before {
   content: '';

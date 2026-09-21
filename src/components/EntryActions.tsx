@@ -1,8 +1,11 @@
 import './EntryActions.css'
 
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 
+import { Tooltip } from './Tooltip'
 import type { StatusMessage } from '../utils/types'
+
+const IN_PROGRESS_MESSAGE = 'This feature is currently in progress'
 
 interface EntryActionsProps {
   onFiles: (files: FileList) => void
@@ -13,7 +16,6 @@ interface EntryActionsProps {
 
 export const EntryActions = ({ onFiles, onDemo, onConnect, status }: EntryActionsProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const [dragging, setDragging] = useState(false)
 
   return (
     <div className="entry">
@@ -22,45 +24,45 @@ export const EntryActions = ({ onFiles, onDemo, onConnect, status }: EntryAction
           Connect Spotify
         </button>
 
-        <button className="btn btn-outline" onClick={() => inputRef.current?.click()}>
-          Upload history
-        </button>
+        <Tooltip message={IN_PROGRESS_MESSAGE} className="tooltip-wrap">
+          <button className="btn btn-outline" disabled>
+            Upload history
+          </button>
+        </Tooltip>
 
         <button className="btn btn-ghost" onClick={onDemo}>
           Try demo data →
         </button>
       </div>
 
-      <div
-        className={`dropzone ${dragging ? 'dropzone-active' : ''}`}
-        onClick={() => inputRef.current?.click()}
-        onDragOver={(e) => {
-          e.preventDefault()
-          setDragging(true)
-        }}
-        onDragLeave={() => setDragging(false)}
-        onDrop={(e) => {
-          e.preventDefault()
-          setDragging(false)
-          onFiles(e.dataTransfer.files)
-        }}
-      >
-        <p>
-          <strong>Drop your file here</strong>, or click a button above.
-          <br />
-          Accepts Spotify's Extended Streaming History <code>.json</code> files, or a <code>.csv</code> with
-          artist / track / played-at columns.
-        </p>
+      <Tooltip message={IN_PROGRESS_MESSAGE}>
+        <div
+          className="dropzone dropzone-disabled"
+          onDragOver={(e) => {
+            e.preventDefault()
+          }}
+          onDrop={(e) => {
+            e.preventDefault()
+          }}
+        >
+          <p>
+            <strong>Drop your file here</strong>, or click a button above.
+            <br />
+            Accepts Spotify's Extended Streaming History <code>.json</code> files, or a <code>.csv</code> with
+            artist / track / played-at columns.
+          </p>
 
-        <input
-          ref={inputRef}
-          type="file"
-          accept=".json,.csv"
-          multiple
-          hidden
-          onChange={(e) => e.target.files && onFiles(e.target.files)}
-        />
-      </div>
+          <input
+            ref={inputRef}
+            type="file"
+            accept=".json,.csv"
+            multiple
+            hidden
+            disabled
+            onChange={(e) => e.target.files && onFiles(e.target.files)}
+          />
+        </div>
+      </Tooltip>
 
       {status && <div className={`status status-${status.type}`}>{status.message}</div>}
 
