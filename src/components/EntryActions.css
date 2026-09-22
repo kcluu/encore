@@ -56,6 +56,15 @@
   margin: 0;
 }
 
+.dropzone .dropzone-help {
+  margin-top: 10px;
+  font-size: 12.5px;
+}
+
+.dropzone-help a {
+  color: var(--green);
+}
+
 .note {
   margin-top: 16px;
   font-size: 12.5px;
