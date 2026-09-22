@@ -17,7 +17,13 @@ export const fetchRecentlyPlayed = async (accessToken: string): Promise<StreamRe
   })
 
   if (!res.ok) {
-    throw new Error('Could not fetch your recently played tracks from Spotify.')
+    if (res.status === 403) {
+      throw new Error(
+        "Spotify blocked this request (403). This app is still in Development Mode which limits accounts the developer has explicitly added — ask them to add your Spotify account email."
+      )
+    }
+
+    throw new Error(`Could not fetch your recently played tracks from Spotify (${res.status}).`)
   }
 
   const json = await res.json()

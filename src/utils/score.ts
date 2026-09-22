@@ -127,6 +127,63 @@ export const computeArtistScore = (a: ArtistDetail, lib: Library): ArtistScore =
   }
 }
 
+// Generates a plausible fake library so the UI can be explored without a
+// real export
+// Gracie on. top.
+export const generateDemoRecords = (): StreamRecord[] => {
+  const artists = [
+    'Gracie Abrams',
+    'Frank Ocean',
+    'SZA',
+    'Tyler, The Creator',
+    'Mac Miller',
+    'Beach House',
+    'Radiohead',
+    'Kendrick Lamar',
+    'Boards of Canada',
+    'Bon Iver',
+    'Björk',
+    'Steve Lacy',
+    'Alvvays',
+  ]
+
+  const weight = [34, 26, 20, 17, 14, 10, 9, 8, 7, 6, 5, 4, 3]
+  const tracksPerArtist: Record<string, string[]> = {}
+
+  artists.forEach((a) => {
+    tracksPerArtist[a] = Array.from({ length: 6 }, (_, i) => `${a} Track ${i + 1}`)
+  })
+
+  const records: StreamRecord[] = []
+  const now = Date.now()
+  const daySpan = 420
+  const totalWeight = weight.reduce((a, b) => a + b, 0)
+
+  for (let i = 0; i < 2800; i++) {
+    const r = Math.random() * totalWeight
+    let acc = 0
+    let idx = 0
+
+    for (let w = 0; w < weight.length; w++) {
+      acc += weight[w]
+      if (r <= acc) {
+        idx = w
+        break
+      }
+    }
+
+    const artist = artists[idx]
+    const track = tracksPerArtist[artist][Math.floor(Math.random() * tracksPerArtist[artist].length)]
+    const daysAgo = Math.floor(Math.random() * Math.random() * daySpan)
+    const ts = new Date(now - daysAgo * 86400000 - Math.floor(Math.random() * 86400000)).toISOString()
+    const ms = 90000 + Math.floor(Math.random() * 130000)
+
+    records.push({ artist, track, ms, ts })
+  }
+
+  return records
+}
+
 const CHIP_COLORS = ['#29e07a', '#ff5fa2', '#ffd23f', '#6fd6ff', '#b98cff']
 
 export const colorFor = (str: string): string => {

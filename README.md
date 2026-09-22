@@ -1,7 +1,8 @@
 # Encore: Fan Score
 
 A small React + TypeScript app that computes a per-artist "fan score" from
-your Spotify listening history — connect your account or upload the export (WIP).
+your Spotify listening history — connect your account, upload the export (WIP),
+or click through demo data (in case Spotify Dev Mode limits accounts).
 
 ![Clicking Connect Spotify, then the resulting fan score dashboard](docs/screenshots/connect-flow.gif)
 
@@ -24,7 +25,7 @@ src/
     score.ts     — groups records by artist and computes the fan score
   components/
     Hero.tsx           + Hero.css           — profile header
-    EntryActions.tsx   + EntryActions.css   — connect / upload buttons + dropzone
+    EntryActions.tsx   + EntryActions.css   — connect / upload / demo buttons + dropzone
     ArtistSearch.tsx   + ArtistSearch.css   — search box for any artist in your history
     ArtistChips.tsx    + ArtistChips.css    — horizontal strip of top artists
     ScorePanel.tsx      + ScorePanel.css     — score gauge + tier + breakdown bars

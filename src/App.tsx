@@ -12,7 +12,7 @@ import { TrackList } from './components/TrackList'
 import { useArtistImages } from './hooks/useArtistImages'
 import { useSpotifyCallback } from './hooks/useSpotifyCallback'
 import { parseCSVRecords, parseJSONRecords, readFileAsText } from './utils/parse'
-import { buildLibrary, computeArtistScore, initialOf } from './utils/score'
+import { buildLibrary, computeArtistScore, generateDemoRecords, initialOf } from './utils/score'
 import { redirectToSpotifyAuthorize } from './utils/spotifyAuth'
 import type { Library, StatusMessage, StreamRecord } from './utils/types'
 
@@ -89,6 +89,10 @@ export const App = () => {
     }
   }
 
+  const handleDemo = () => {
+    loadRecords(generateDemoRecords(), 'Demo Listener')
+  }
+
   useSpotifyCallback(loadRecords, setStatus, setAccessToken)
 
   const handleConnect = async () => {
@@ -137,9 +141,7 @@ export const App = () => {
         photoUrl={library ? profilePhoto : null}
       />
 
-      {!library && (
-        <EntryActions onFiles={handleFiles} onConnect={handleConnect} status={status} />
-      )}
+      {!library && <EntryActions onFiles={handleFiles} onDemo={handleDemo} onConnect={handleConnect} />}
 
       {library && (
         <main className="main">
